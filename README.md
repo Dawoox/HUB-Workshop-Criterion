@@ -68,7 +68,7 @@ int div_by_two(int a)
 	return ((a << 1) + 1);
 }
 ```
-![[Pasted image 20240125235914.png]]
+![](./doc/confused_cat.png)
 *Copy and paste this snippet of code into calculator.c, no need to worry about calculator.h it's already filled with the needed prototype.*
 
 Pretty sus function, but why hesitate, it should work ? Right?..
