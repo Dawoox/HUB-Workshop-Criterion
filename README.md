@@ -17,7 +17,7 @@ Testing is a way to ensure that a given function give the current output, or at 
 
 ## How to use it?
 
-So now we know what is it, and why it's important to use such testing framework in our code, so how do we use it ?
+So now we know what is it, and why it's important to use such testing framework in our code, but how do we use it ?
 
 ### Installing Criterion
 
@@ -26,12 +26,15 @@ It will depends on your system so pick the one that correspond to your need.
 
 | Plateform | Command |
 | ---- | ---- |
-| **Ubuntu /Debian** | `apt-get install libcriterion-dev` |
+| **Ubuntu / Debian** | `apt-get install libcriterion-dev` |
 | **Arch Linux** | `pacaur -S criterion` |
 | **Nix** | `nix-env -iA ixpkgs#criterion` |
 | **NixOS** | *add* `nixpkgs#criterion` *into your configuration.nix* |
 | **Fedora 38** | Click [here](https://intra.epitech.eu/file/Public/technical-documentations/C/install_criterion.sh) to download a script that install criterion |
-*Note that to download the Fedora 38 script you need to be logged in the Epitech Intranet website*
+| **Windows** | Click [here](https://github.com/Snaipe/Criterion) to build it from the sources |
+> *Note that to download the Fedora 38 script you need to be logged on the Epitech Intranet website*
+
+![](./doc/pkg_meme.png)
 
 ### Using it
 
@@ -46,13 +49,79 @@ unit_tests:
 ```
 
 This rule need to compile something, and thus we need the list to thing to compile.
-Let's add a new 
 
+Let's add a new list of sources and the corresponding objects.
+```Makefile
+TEST_SRC = empty
 
+TEST_OBJ = $(TEST_SRC:.c=.o)
+```
 
-//TODO
+Finally we can wrote the line to compile those objects, let's get back to our `unit_tests` line:
+```Makefile
+unit_tests:
+	$(CC) $(TEST_OBJ) $(CFLAGS) -o unit_tests
+```
 
+We are still missing an important part, we need to give a special set of flags to gcc to let it know that we want to compile with our criterion library and with the special magic needed to add coverage (we will come back on that later).
 
+To do that, let's edit once again the `unit_tests` rule:
+```Makefile
+unit_tests: CFLAGS += -lcriterion --coverage -g3
+unit_tests:
+	$(CC) $(TEST_OBJ) $(CFLAGS) -o unit_tests
+```
+
+Let's breakdown what those do:
+* `-lcriterion` add the criterion library when we compile
+* `--coverage` will tell the compiler to generate special files when running the tests (those `.gcda` or `.gcno`)
+* `-g3` enable the 'debug' mode to keep tracking stuff in the binary so that a debugger could better indicate us where is the issue
+
+But you might notice an issue, we compile our test only .. with our tests, so they can test anything! That's where we need a bit of trickery, we need to compile our test **without** our main, as Criterion add it's own, but we cannot simply remove our main.c file or our program will never compile on it's own.
+
+That's why we need to edit a final time our Makefile, edit your Makefile so that it's the same as the snippet bellow, we will breakdown what we change just after.
+```Makefile
+SRC = calculator.c
+
+TEST_SRC := $(SRC)
+
+SRC += main.c
+```
+This allow use to have in `SRC` the list of all our source code with the main, and in `TEST_SRC` the same without our main, and with our tests (those will be added later).
+
+![](./doc/compile_meme.jpg)
+
+### Writing our first test
+
+We're getting here, after all this setup we can write our first test!
+Per standard we will put our tests in the `tests` folder, for this time the folder is already created, so you just need to create a file called `my_test.c` in it.
+
+Here is the syntax of a Criterion test:
+```c
+/*
+** EPITECH PROJECT, 2024
+** HUB-Workshop-Criterion
+** File description:
+** my_test.c
+*/
+
+#include <criterion/criterion.h>
+
+Test(basic, example) {
+    cr_assert_eq((1 + 1), 2);
+}
+```
+
+> *Don't forget to include the criterion library!*
+
+In the example above, I wrote a test in the `basic` group, with the name `example`.
+And the test pass if `(1 + 1)` is equal to `2`;
+
+Let's add this file to our Makefile:
+```Makefile
+TEST_SRC := $(SRC)
+TEST_SRC += ./tests/my_test.c
+```
 
 
 
@@ -60,16 +129,15 @@ Let's add a new
 
 Our code is working, our tests are reporting 100% passed, any developer would be happy in this situation.
 
-⚠️ But now come the dangerous situation 
-We need to implement a new function, something that divide by two a given integer. But here is the dangerous part, we didn't wrote that code, some did it for us, here is the code that is given to you
+But now come the issue, we need to implement a new function, something that divide by two a given integer. And here is the dangerous part: we didn't wrote that code, some did it for us, here is the code that is given to you
 ```c
 int div_by_two(int a)
 {
-	return ((a << 1) + 1);
+	return ((a >> 1) + 1);
 }
 ```
-![](./doc/confused_cat.png)
 *Copy and paste this snippet of code into calculator.c, no need to worry about calculator.h it's already filled with the needed prototype.*
 
+![](./doc/confused_cat.png)
+<br>
 Pretty sus function, but why hesitate, it should work ? Right?..
-
