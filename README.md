@@ -13,7 +13,7 @@ But those rules at Epitech are here for a reason.
 
 It might sound dumb, but you especialy  are not as reliable as you think, you will forget to test something when implementing a new feature or fixing an old bug. And depending on the project, if there is not a fail-safe mechanism to warn you when you break something the consequences can be quite literally life or death.
 No need to worry during your cursus the chance you work on a nuclear plant are quite low (but never zero!), but you might fail a project because when implementing the last thing, on the last day, you broke half of the functions without noticing.
-Testing is a way to ensure that a given function give the current output, or at least the same every time. It also help to think about every edge-case where your top-of-the-line algorithm could (and will) fail.
+Testing is a way to ensure that a given function give the correct output, or at least the same every time. It also help to think about every edge-case where your top-of-the-line algorithm could (and will) fail.
 
 ## How to use it?
 
