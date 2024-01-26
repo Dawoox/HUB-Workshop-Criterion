@@ -153,10 +153,10 @@ int div_by_two(int a)
 	return ((a >> 1) + 1);
 }
 ```
-*Copy and paste this snippet of code into calculator.c, no need to worry about calculator.h it's already filled with the needed prototype.*
 
 ![](./doc/confused_cat.png)
-<br>
+*Copy and paste this snippet of code into calculator.c, no need to worry about calculator.h it's already filled with the needed prototype.*
+
 Write 4 more functions to test if the function operate as wanted.
 If it doesn't, you might want to change the implementation, maybe there is another way to divide something by 2?
 Remember you **cannot** edit the main to test if the function is working.
