@@ -59,8 +59,20 @@ TEST_OBJ = $(TEST_SRC:.c=.o)
 
 Finally we can wrote the line to compile those objects, let's get back to our `unit_tests` line:
 ```Makefile
-unit_tests:
+unit_tests: $(TEST_OBJ)
 	$(CC) $(TEST_OBJ) $(CFLAGS) -o unit_tests
+```
+
+And let's not forget to update our `clean` and `fclean` rules:
+```Makefile
+clean:
+	@ rm -f $(OBJ)
+	@ rm -f $(TEST_OBJ)
+	@ find . -name "*.gcda" -delete -o -name "*.gcno" -delete
+
+fclean:
+	@ rm -f $(NAME)
+	@ rm -f unit_tests
 ```
 
 We are still missing an important part, we need to give a special set of flags to gcc to let it know that we want to compile with our criterion library and with the special magic needed to add coverage (we will come back on that later).
@@ -68,7 +80,7 @@ We are still missing an important part, we need to give a special set of flags t
 To do that, let's edit once again the `unit_tests` rule:
 ```Makefile
 unit_tests: CFLAGS += -lcriterion --coverage -g3
-unit_tests:
+unit_tests: $(TEST_OBJ)
 	$(CC) $(TEST_OBJ) $(CFLAGS) -o unit_tests
 ```
 
@@ -123,11 +135,16 @@ TEST_SRC := $(SRC)
 TEST_SRC += ./tests/my_test.c
 ```
 
+### Write your own tests
 
+New it's your part, write at least 4 tests for each function (add and mul).
+Don't hesitate to ask questions if you don't know what/how to test.
+
+Pass at the next section **only** if you have 8 or more tests and if they all pass.
 
 ### Every is working, and the tests passed !
 
-Our code is working, our tests are reporting 100% passed, any developer would be happy in this situation.
+Great, our code is working, our tests are reporting 100% passed, any developer would be happy in this situation.
 
 But now come the issue, we need to implement a new function, something that divide by two a given integer. And here is the dangerous part: we didn't wrote that code, some did it for us, here is the code that is given to you
 ```c
@@ -140,4 +157,11 @@ int div_by_two(int a)
 
 ![](./doc/confused_cat.png)
 <br>
-Pretty sus function, but why hesitate, it should work ? Right?..
+Write 4 more functions to test if the function operate as wanted.
+Remember you **cannot** edit the main to test if the function is working.
+
+## And voila
+
+You now know how to use Criterion, why use it, and how to integrate it in your existing Makefile. Don't hesitate to ask questions if you need, use the remaining time to try adding tests to one of our existing project.
+
+If you need more documentation on how to do something, you can find explained snippets in the `examples` folder, you can also search on the [Epitech wiki](https://epitech-2022-technical-documentation.readthedocs.io/en/latest/criterion.html)

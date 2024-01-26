@@ -1,0 +1,7 @@
+# Ignore bin(s)
+run
+unit_tests
+
+# Coverage info files
+*.gcda
+*.gcno
