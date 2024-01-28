@@ -27,7 +27,7 @@ It will depends on your system so pick the one that correspond to your need.
 | Plateform | Command |
 | ---- | ---- |
 | **Ubuntu / Debian** | `apt-get install libcriterion-dev` |
-| **Arch Linux** | `pacaur -S criterion` |
+| **Arch Linux** | `yay -S criterion` |
 | **Nix** | `nix-env -iA ixpkgs#criterion` |
 | **NixOS** | *add* `nixpkgs#criterion` *into your configuration.nix* |
 | **Fedora 38** | Click [here](https://intra.epitech.eu/file/Public/technical-documentations/C/install_criterion.sh) to download a script that install criterion |
