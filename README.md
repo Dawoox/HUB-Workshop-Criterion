@@ -155,6 +155,7 @@ int div_by_two(int a)
 ```
 
 ![](./doc/confused_cat.png)
+<br>
 *Copy and paste this snippet of code into calculator.c, no need to worry about calculator.h it's already filled with the needed prototype.*
 
 Write 4 more functions to test if the function operate as wanted.
